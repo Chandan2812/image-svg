@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const port = 3000;
+
 
 // Set up multer for file upload
 const upload = multer({ dest: 'uploads/' });
@@ -44,6 +44,7 @@ app.post('/convert', upload.single('image'), (req, res) => {
         });
 });
 
+const port=process.env.port || 3000
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
