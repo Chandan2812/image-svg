@@ -1,0 +1,36 @@
+# SVG Canvas
+Make SVG figures via javascript
+
+## Install
+`npm install --save svg-canvas`
+
+## Usage
+
+```javascript
+import fs from 'fs'
+import path from 'path'
+import SVG, { Group, Line, point } from 'svg-canvas'
+
+
+const PI = 3.141592
+class Tree extends Group {
+  constructor (length, color, thickness) {
+    super()
+    this.include(new Line(point(0, 0), point(0, length)).stroke(color).strokeWidth(thickness))
+    if (length > 3) {
+      this.include(new Tree(length / 2, color, thickness).translate(0, length))
+      this.include(new Tree(length / 2, color, thickness).rotate(PI / 6).translate(0, length))
+      this.include(new Tree(length / 2, color, thickness).rotate(-PI / 6).translate(0, length))
+    }   
+  }
+}
+
+const tree = new Tree(100, 'black', 1).rotate(PI).translate(100, 200)
+const svg = new SVG(200, 200).include(tree)
+fs.writeFileSync(path.join(__dirname, '/tree.svg'), svg)
+```
+
+![tree](http://blog.harukim.xyz/wp-content/uploads/2016/12/svg-canvas-readme-tree.png)
+
+## License
+MIT
